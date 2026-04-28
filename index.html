@@ -1,774 +1,982 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arnaud Crepinge - CV</title>
+    <title>Arnaud Crepinge — Physics Research</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght:700;900&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
+        /* ===================== TOKENS ===================== */
         :root {
-            --primary: #0a4d8f;
-            --secondary: #00d9ff;
-            --accent-orange: #ff6b35;
-            --accent-purple: #9d4edd;
-            --accent-green: #06ffa5;
-            --dark: #0a1128;
-            --light: #f8f9fa;
-            --gray: #6c757d;
-            --bg-gradient: linear-gradient(135deg, #0a1128 0%, #1a2332 100%);
+            --fire-1: #ff2200;
+            --fire-2: #ff6600;
+            --fire-3: #ffaa00;
+            --fire-4: #ffd166;
+            --ember: #ff4422;
+
+            /* Dark theme (default) */
+            --bg:         #0a0908;
+            --bg-surface: #131110;
+            --bg-card:    #1c1917;
+            --bg-card-2:  #211f1c;
+            --border:     rgba(255,102,0,0.18);
+            --border-hi:  rgba(255,102,0,0.45);
+            --text-hi:    #fdf0e0;
+            --text-med:   #c4a882;
+            --text-lo:    #7a6655;
+            --glow:       rgba(255,102,0,0.22);
+            --glow-hi:    rgba(255,102,0,0.45);
+            --shadow:     rgba(0,0,0,0.6);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        [data-theme="light"] {
+            --bg:         #fdf6ee;
+            --bg-surface: #f5ebe0;
+            --bg-card:    #fff9f4;
+            --bg-card-2:  #fdf0e2;
+            --border:     rgba(200,80,0,0.2);
+            --border-hi:  rgba(200,80,0,0.5);
+            --text-hi:    #1a100a;
+            --text-med:   #5a3520;
+            --text-lo:    #9a7060;
+            --glow:       rgba(255,102,0,0.12);
+            --glow-hi:    rgba(255,102,0,0.28);
+            --shadow:     rgba(100,40,0,0.12);
         }
+
+        /* ===================== RESET ===================== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Work Sans', sans-serif;
+            font-family: 'Syne', sans-serif;
+            background: var(--bg);
+            color: var(--text-hi);
             line-height: 1.6;
-            color: var(--dark);
-            background: var(--light);
             overflow-x: hidden;
+            transition: background 0.4s ease, color 0.4s ease;
         }
 
-        /* Animated background pattern */
+        /* ===================== NOISE TEXTURE ===================== */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(0deg, transparent 24%, rgba(10, 77, 143, .05) 25%, rgba(10, 77, 143, .05) 26%, transparent 27%, transparent 74%, rgba(10, 77, 143, .05) 75%, rgba(10, 77, 143, .05) 76%, transparent 77%, transparent),
-                linear-gradient(90deg, transparent 24%, rgba(10, 77, 143, .05) 25%, rgba(10, 77, 143, .05) 26%, transparent 27%, transparent 74%, rgba(10, 77, 143, .05) 75%, rgba(10, 77, 143, .05) 76%, transparent 77%, transparent);
-            background-size: 50px 50px;
-            z-index: -1;
-            opacity: 0;
-            animation: fadeIn 1s ease-out 0.3s forwards;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
+        /* ===================== LAYOUT ===================== */
+        .wrap { max-width: 1100px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* ===================== THEME TOGGLE ===================== */
+        #theme-btn {
+            position: fixed;
+            top: 1.4rem;
+            right: 1.5rem;
+            z-index: 1000;
+            width: 52px;
+            height: 28px;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-hi);
+            border-radius: 999px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 3px;
+            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 0 12px var(--glow);
         }
+        #theme-btn:hover { box-shadow: 0 0 20px var(--glow-hi); }
 
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        #theme-knob {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--fire-2), var(--fire-3));
+            transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
         }
+        [data-theme="light"] #theme-knob { transform: translateX(24px); }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* Header */
+        /* ===================== HEADER ===================== */
         header {
-            background: var(--bg-gradient);
-            color: white;
-            padding: 4rem 0 3rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
             position: relative;
             overflow: hidden;
-            opacity: 0;
-            animation: slideUp 0.8s ease-out forwards;
+            padding: 8rem 0 6rem;
         }
 
+        /* Radial glow — the "black hole" effect */
+        header::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            right: -15%;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(ellipse at center,
+                rgba(255,80,0,0.28) 0%,
+                rgba(255,40,0,0.12) 30%,
+                transparent 70%);
+            animation: breathe 6s ease-in-out infinite;
+            pointer-events: none;
+        }
         header::after {
             content: '';
             position: absolute;
-            top: 0;
-            right: 0;
+            bottom: -5%;
+            left: -10%;
             width: 500px;
             height: 500px;
-            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
-            opacity: 0.1;
-            animation: pulse 4s ease-in-out infinite;
+            background: radial-gradient(ellipse at center,
+                rgba(255,160,0,0.15) 0%,
+                transparent 65%);
+            animation: breathe 8s ease-in-out infinite reverse;
+            pointer-events: none;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.1; }
-            50% { transform: scale(1.1); opacity: 0.15; }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1) translate(0,0); opacity: 0.8; }
+            50%       { transform: scale(1.08) translate(-20px, 15px); opacity: 1; }
         }
 
-        .header-content {
+        /* Orbit ring decorations */
+        .orbit {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(255,102,0,0.1);
+            pointer-events: none;
+        }
+        .orbit-1 { width: 320px; height: 320px; top: 10%; right: 8%;  animation: spin 40s linear infinite; }
+        .orbit-2 { width: 500px; height: 500px; top: 0%;  right: 0%;  animation: spin 70s linear infinite reverse; opacity: 0.5; }
+        .orbit-3 { width: 140px; height: 140px; top: 30%; right: 18%; animation: spin 20s linear infinite; border-color: rgba(255,170,0,0.2); }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .header-inner {
             position: relative;
-            z-index: 1;
+            z-index: 2;
+            max-width: 780px;
+        }
+
+        .eyebrow {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.78rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--fire-2);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            opacity: 0;
+            animation: fadeUp 0.7s 0.1s ease-out forwards;
+        }
+        .eyebrow::before {
+            content: '';
+            display: inline-block;
+            width: 32px;
+            height: 1.5px;
+            background: var(--fire-2);
         }
 
         h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 900;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, white 0%, var(--secondary) 100%);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 10vw, 8.5rem);
+            line-height: 0.92;
+            letter-spacing: 0.02em;
+            color: var(--text-hi);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.25s ease-out forwards;
+        }
+        h1 span {
+            display: block;
+            background: linear-gradient(95deg, var(--fire-2) 0%, var(--fire-3) 50%, var(--fire-4) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: -1px;
         }
 
-        .subtitle {
-            font-size: 1.5rem;
-            font-weight: 300;
-            color: var(--secondary);
-            margin-bottom: 1rem;
+        .tagline {
+            font-size: 1.05rem;
+            color: var(--text-med);
+            max-width: 520px;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.4s ease-out forwards;
         }
 
-        .contact-info {
+        .contacts {
             display: flex;
-            gap: 2rem;
             flex-wrap: wrap;
-            margin-top: 1.5rem;
-            font-size: 0.95rem;
+            gap: 0.6rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.55s ease-out forwards;
+        }
+        .contacts a, .contacts span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 1.1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-med);
+            font-size: 0.85rem;
+            font-family: 'DM Mono', monospace;
+            text-decoration: none;
+            transition: border-color 0.25s, color 0.25s, box-shadow 0.25s, transform 0.2s;
+        }
+        .contacts a:hover {
+            border-color: var(--fire-2);
+            color: var(--fire-3);
+            box-shadow: 0 0 14px var(--glow);
+            transform: translateY(-2px);
         }
 
-        .contact-item {
+        /* scroll hint */
+        .scroll-hint {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--text-lo);
+            font-size: 0.7rem;
+            font-family: 'DM Mono', monospace;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            animation: fadeUp 1s 1.2s ease-out both;
+        }
+        .scroll-hint::after {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--fire-2), transparent);
+            animation: scrollLine 2s 1.5s ease-in-out infinite;
+        }
+        @keyframes scrollLine {
+            0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+            50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+            51%  { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+            100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+        }
+
+        /* ===================== SECTIONS ===================== */
+        section { padding: 5rem 0; border-top: 1px solid var(--border); }
+
+        .section-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--fire-2);
+            margin-bottom: 0.6rem;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            line-height: 1;
+            color: var(--text-hi);
+            margin-bottom: 3rem;
+        }
+
+        /* ===================== ABOUT ===================== */
+        #about .about-text {
+            font-size: 1.15rem;
+            color: var(--text-med);
+            max-width: 680px;
+            line-height: 1.85;
+        }
+        #about .about-text strong { color: var(--fire-3); font-weight: 600; }
+
+        /* ===================== EXPERIENCE ===================== */
+        .timeline { display: flex; flex-direction: column; gap: 0; }
+
+        .tl-item {
+            display: grid;
+            grid-template-columns: 160px 1px 1fr;
+            gap: 0 2rem;
+            position: relative;
+        }
+
+        .tl-date {
+            text-align: right;
+            padding-top: 0.15rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-lo);
+            line-height: 1.4;
+            padding-right: 0.5rem;
+            padding-bottom: 3rem;
+        }
+        .tl-date strong { display: block; color: var(--fire-3); font-size: 0.8rem; }
+
+        /* The vertical line */
+        .tl-line {
+            position: relative;
+            background: var(--border);
+            width: 1px;
+            flex-shrink: 0;
+        }
+        .tl-line::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--fire-2);
+            box-shadow: 0 0 10px var(--fire-2), 0 0 20px rgba(255,102,0,0.4);
+        }
+        .tl-item:last-child .tl-line { height: 26px; }
+
+        .tl-body { padding-bottom: 3rem; }
+
+        .tl-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-hi);
+            margin-bottom: 0.2rem;
+        }
+
+        .tl-org {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--fire-3);
+            margin-bottom: 0.8rem;
+        }
+        .tl-org a { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--fire-3); }
+        .tl-org a:hover { color: var(--fire-4); }
+
+        .tl-desc {
+            color: var(--text-med);
+            font-size: 0.93rem;
+            line-height: 1.7;
+        }
+        .tl-desc li { margin-left: 1.2rem; margin-bottom: 0.35rem; }
+
+        /* ===================== SKILLS ===================== */
+        .skills-wrap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .skill-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.6rem;
+            transition: border-color 0.3s, box-shadow 0.3s, transform 0.25s;
+        }
+        .skill-box:hover {
+            border-color: var(--fire-2);
+            box-shadow: 0 0 24px var(--glow), inset 0 0 24px rgba(255,102,0,0.03);
+            transform: translateY(-4px);
+        }
+
+        .skill-box-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--fire-2);
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            opacity: 0;
-            animation: slideInLeft 0.6s ease-out forwards;
+        }
+        .skill-box-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        .skill-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+        .chip {
+            padding: 0.35rem 0.85rem;
+            background: var(--bg-card-2);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.82rem;
+            color: var(--text-med);
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+        }
+        .chip:hover {
+            border-color: var(--fire-3);
+            color: var(--fire-3);
+            background: rgba(255,170,0,0.07);
         }
 
-        .contact-item:nth-child(1) { animation-delay: 0.3s; }
-        .contact-item:nth-child(2) { animation-delay: 0.4s; }
-        .contact-item:nth-child(3) { animation-delay: 0.5s; }
-        .contact-item:nth-child(4) { animation-delay: 0.6s; }
-
-        .contact-item a {
-            color: white;
-            text-decoration: none;
-            transition: color 0.3s ease;
+        /* ===================== PROJECTS ===================== */
+        .projects-wrap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.2rem;
         }
 
-        .contact-item a:hover {
-            color: var(--secondary);
+        .proj-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s, box-shadow 0.3s, transform 0.25s;
+        }
+        .proj-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--fire-1), var(--fire-3));
+        }
+        .proj-card:hover {
+            border-color: var(--fire-2);
+            box-shadow: 0 0 30px var(--glow);
+            transform: translateY(-5px);
         }
 
-        /* Main content */
-        main {
-            padding: 4rem 0;
+        .proj-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--border);
+            line-height: 1;
+            margin-bottom: 0.8rem;
+            transition: color 0.3s;
         }
+        .proj-card:hover .proj-number { color: rgba(255,102,0,0.25); }
 
-        .section {
-            margin-bottom: 4rem;
-            opacity: 0;
-            animation: slideUp 0.8s ease-out forwards;
-        }
-
-        .section:nth-child(1) { animation-delay: 0.2s; }
-        .section:nth-child(2) { animation-delay: 0.3s; }
-        .section:nth-child(3) { animation-delay: 0.4s; }
-        .section:nth-child(4) { animation-delay: 0.5s; }
-        .section:nth-child(5) { animation-delay: 0.6s; }
-
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
+        .proj-title {
+            font-size: 1rem;
             font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 2rem;
-            position: relative;
-            display: inline-block;
+            color: var(--text-hi);
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+        .proj-desc { font-size: 0.88rem; color: var(--text-med); margin-bottom: 1rem; }
+
+        .proj-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .proj-chip {
+            padding: 0.25rem 0.65rem;
+            border: 1px solid var(--fire-2);
+            border-radius: 3px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--fire-2);
         }
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent-orange), var(--secondary));
-            border-radius: 2px;
+        /* ===================== LANGUAGES ===================== */
+        .lang-wrap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
         }
 
-        /* Experience & Education */
-        .timeline-item {
-            margin-bottom: 2.5rem;
-            padding-left: 2rem;
-            border-left: 3px solid var(--secondary);
-            position: relative;
-            transition: all 0.3s ease;
+        .lang-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.4rem 1.6rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .lang-card:hover {
+            border-color: var(--fire-2);
+            box-shadow: 0 0 18px var(--glow);
         }
 
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -9px;
-            top: 0;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: var(--secondary);
-            box-shadow: 0 0 0 4px var(--light), 0 0 0 6px var(--secondary);
-            transition: all 0.3s ease;
-        }
-
-        .timeline-item:hover {
-            border-left-color: var(--accent-orange);
-        }
-
-        .timeline-item:hover::before {
-            background: var(--accent-orange);
-            box-shadow: 0 0 0 4px var(--light), 0 0 0 6px var(--accent-orange);
-            transform: scale(1.2);
-        }
-
-        .timeline-header {
+        .lang-top {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.9rem;
+        }
+        .lang-name { font-weight: 700; font-size: 1rem; color: var(--text-hi); }
+        .lang-level {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--fire-3);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
         }
 
-        .timeline-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .timeline-period {
-            font-size: 0.9rem;
-            color: var(--secondary);
-            font-weight: 500;
-        }
-
-        .timeline-subtitle {
-            font-size: 1.1rem;
-            color: var(--gray);
-            margin-bottom: 0.75rem;
-        }
-
-        .timeline-description {
-            color: var(--dark);
-            line-height: 1.7;
-        }
-
-        .timeline-description ul {
-            margin-top: 0.5rem;
-            padding-left: 1.5rem;
-        }
-
-        .timeline-description li {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Skills */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-category {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            border-top: 4px solid var(--secondary);
-            transition: all 0.3s ease;
-        }
-
-        .skill-category:nth-child(2) {
-            border-top-color: var(--accent-orange);
-        }
-
-        .skill-category:nth-child(3) {
-            border-top-color: var(--accent-purple);
-        }
-
-        .skill-category:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
-        }
-
-        .skill-category h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 1rem;
-        }
-
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .skill-tag {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 0.4rem 0.9rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .skill-tag:hover {
-            transform: scale(1.05);
-            box-shadow: 0 2px 10px rgba(0, 217, 255, 0.3);
-        }
-
-        /* Projects */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background: white;
-            border-radius: 12px;
+        .lang-bar {
+            height: 3px;
+            background: var(--border);
+            border-radius: 2px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            border-left: 5px solid var(--accent-orange);
+        }
+        .lang-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--fire-1), var(--fire-3));
+            border-radius: 2px;
+            transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
         }
 
-        .project-card:nth-child(2) {
-            border-left-color: var(--accent-purple);
-        }
-
-        .project-card:nth-child(3) {
-            border-left-color: var(--accent-green);
-        }
-
-        .project-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 35px rgba(0, 0, 0, 0.15);
-        }
-
-        .project-content {
-            padding: 1.5rem;
-        }
-
-        .project-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.75rem;
-        }
-
-        .project-description {
-            color: var(--gray);
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-
-        .project-tech {
+        /* ===================== INTERESTS ===================== */
+        .interests-wrap {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.4rem;
+            gap: 0.7rem;
+        }
+        .interest-tag {
+            padding: 0.65rem 1.3rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: var(--text-med);
+            cursor: default;
+            transition: border-color 0.25s, color 0.25s, box-shadow 0.25s, transform 0.2s;
+        }
+        .interest-tag:hover {
+            border-color: var(--fire-3);
+            color: var(--fire-3);
+            box-shadow: 0 0 14px var(--glow);
+            transform: translateY(-2px);
         }
 
-        .tech-badge {
-            background: rgba(10, 77, 143, 0.1);
-            color: var(--primary);
-            padding: 0.3rem 0.7rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        /* Languages */
-        .languages-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .language-item {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-
-        .language-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
-        }
-
-        .language-header {
+        /* ===================== FOOTER ===================== */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2.5rem 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
-
-        .language-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .language-level {
-            font-size: 0.85rem;
-            color: white;
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-orange));
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-weight: 500;
-        }
-
-        .language-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(10, 77, 143, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .language-progress {
-            height: 100%;
-            background: linear-gradient(90deg, var(--secondary), var(--accent-green));
-            border-radius: 3px;
-            transition: width 1s ease-out;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--bg-gradient);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            margin-top: 4rem;
-        }
-
         footer p {
-            font-size: 0.9rem;
-            opacity: 0.8;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-lo);
+        }
+        footer span {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--fire-2);
+            opacity: 0.7;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            .subtitle {
-                font-size: 1.2rem;
-            }
-
-            .contact-info {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            .section-title {
-                font-size: 1.6rem;
-            }
-
-            .timeline-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .projects-grid,
-            .skills-grid,
-            .languages-list {
-                grid-template-columns: 1fr;
-            }
+        /* ===================== ANIMATIONS ===================== */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(22px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* Print styles */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===================== RESPONSIVE ===================== */
+        @media (max-width: 700px) {
+            .tl-item {
+                grid-template-columns: 90px 1px 1fr;
+                gap: 0 1rem;
+            }
+            .tl-date { font-size: 0.68rem; }
+            h1 { font-size: 3.8rem; }
+            footer { flex-direction: column; align-items: flex-start; }
+        }
+        @media (max-width: 480px) {
+            .tl-item { grid-template-columns: 1fr; }
+            .tl-date { text-align: left; padding-right: 0; padding-bottom: 0.4rem; }
+            .tl-line { display: none; }
+            .tl-body { border-left: 2px solid var(--border); padding-left: 1rem; }
+        }
+
+        /* ===================== PRINT ===================== */
         @media print {
-            body::before {
-                display: none;
-            }
-
-            header {
-                background: var(--primary);
-                page-break-after: avoid;
-            }
-
-            .section {
-                page-break-inside: avoid;
-            }
-
-            .timeline-item:hover,
-            .skill-category:hover,
-            .project-card:hover,
-            .language-item:hover {
-                transform: none;
-            }
+            body::before, .orbit, .scroll-hint, #theme-btn { display: none; }
+            header { min-height: auto; padding: 3rem 0; }
+            section { padding: 2rem 0; }
         }
     </style>
 </head>
 <body>
+
+    <!-- THEME TOGGLE -->
+    <button id="theme-btn" aria-label="Toggle theme">
+        <div id="theme-knob">
+            <span id="theme-icon">🌑</span>
+        </div>
+    </button>
+
+    <!-- ======================== HEADER ======================== -->
     <header>
-        <div class="container header-content">
-            <h1>Arnaud Crepinge</h1>
-            <p class="subtitle">Physics Research Student</p>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <span>📧</span>
-                    <a href="mailto:arnaud.crepinge.pro@gmail.com">arnaud.crepinge.pro@gmail.com</a>
-                </div>
-                <div class="contact-item">
-                    <span>📱</span>
-                    <span>(+33) 07 82 40 04 14</span>
-                </div>
-                <div class="contact-item">
-                    <span>🔗</span>
-                    <a href="https://www.linkedin.com/in/arnaud-crepinge/" target="_blank">LinkedIn Profile</a>
-                </div>
-                <div class="contact-item">
-                    <span>💻</span>
-                    <a href="https://github.com/ArnaudCrepinge" target="_blank">GitHub Profile</a>
+        <div class="orbit orbit-1"></div>
+        <div class="orbit orbit-2"></div>
+        <div class="orbit orbit-3"></div>
+
+        <div class="wrap">
+            <div class="header-inner">
+                <div class="eyebrow">Physics Research Student</div>
+
+                <h1>
+                    Arnaud<br>
+                    <span>Crepinge</span>
+                </h1>
+
+                <p class="tagline">
+                    Master's student in cosmology and high energy physics at Université Lyon 1 —
+                    working at the Observatoire de la Côte-d'Azur.
+                    Seeking a data science position from <strong>September 2026</strong>.
+                </p>
+
+                <div class="contacts">
+                    <a href="mailto:arnaud.crepinge.pro@gmail.com">✉ arnaud.crepinge.pro@gmail.com</a>
+                    <span>☎ +33 07 82 40 04 14</span>
+                    <a href="https://www.linkedin.com/in/arnaud-crepinge/" target="_blank">↗ LinkedIn</a>
+                    <a href="https://github.com/ArnaudCrepinge" target="_blank">⌥ GitHub</a>
                 </div>
             </div>
         </div>
+
+        <div class="scroll-hint">scroll</div>
     </header>
 
+    <!-- ======================== MAIN ======================== -->
     <main>
-        <div class="container">
-            <section class="section">
-                <h2 class="section-title">About me</h2>
-                <p>
-                    I am a French Master's student in cosmology and high energy physics at the university of
-                    Lyon. I will be focused on my final-year internship until July 2026, after which I will be looking
-                    for a position in data science in order to apply my machine-learning skills to more practical,
-                    real world problems.
-                </p>
-            </section>
-
-            <!-- Work Experience -->
-            <section class="section">
-                <h2 class="section-title">Work Experience</h2>
-
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <h3 class="timeline-title">Research Intern</h3>
-                        <span class="timeline-period">March 2026 - Present</span>
-                    </div>
-                    <p class="timeline-subtitle"><a href='https://www.oca.eu/fr/' target="_blank">Observatoire de la Côte-d'Azur</a>, Nice, France</p>
-                    <div class="timeline-description">
-                        <ul>
-                            <li>Title of the internship : 'Dynamique autour des trous noirs chargés en relativité intriquée'</li>
-                        </ul>
-                    </div>
+        <!-- ABOUT -->
+        <section id="about">
+            <div class="wrap">
+                <div class="reveal">
+                    <p class="section-label">01 — Profile</p>
+                    <h2 class="section-title">About Me</h2>
+                    <p class="about-text">
+                        I am a French Master's student in <strong>cosmology and high energy physics</strong> at
+                        the Université Claude Bernard Lyon 1. Currently focused on my final-year internship — studying
+                        <strong>dynamics around charged black holes in entangled relativity</strong> — until July 2026.
+                        Afterward, I will be seeking a position in <strong>data science</strong>, in order to apply my
+                        machine-learning and numerical modeling skills to real-world challenges.
+                    </p>
                 </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <h3 class="timeline-title">Research Intern</h3>
-                        <span class="timeline-period">May 2025 - August 2025</span>
-                    </div>
-                    <p class="timeline-subtitle"><a href='https://nbi.ku.dk/english/' target="_blank">Niels Bohr Institute</a>, Copenhagen, Denmark</p>
-                    <div class="timeline-description">
-                        <ul>
-                            <li>Title of the internship : 'Superradiance in charged black holes'</li>
-                            <li>This international internship was a valuable opportunity that allowed me to gain research experience abroad and expand my scientific perspective.</li>
-                        </ul>
-                    </div>
-                </div>
+            </div>
+        </section>
 
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <h3 class="timeline-title">Research Intern</h3>
-                        <span class="timeline-period">May 2024 - Jul 2024</span>
-                    </div>
-                    <p class="timeline-subtitle">Laboratoire de Physique des Lasers, Atomes et Molécules (<a href="https://phlam.univ-lille.fr/" target="_blank">PhLAM</a>), Villeneuve-d'Ascq, France</p>
-                    <div class="timeline-description">
-                        <ul>
-                            <li>Title of the internship: 'Time-frequency representation of rotating detector signals in quantum field theory'</li>
-                            <li>This internship was my first contact with the world of research.</li>
-                        </ul>
-                    </div>
-                </div>
+        <!-- EXPERIENCE -->
+        <section id="experience">
+            <div class="wrap">
+                <div class="reveal">
+                    <p class="section-label">02 — Career</p>
+                    <h2 class="section-title">Work Experience</h2>
 
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <h3 class="timeline-title">Undergraduate Tutor</h3>
-                        <span class="timeline-period">Oct 2023 - May 2024</span>
-                    </div>
-                    <p class="timeline-subtitle"><a href='https://www.univ-lille.fr/' target="_blank">Université de Lille</a>, Villeneuve-d'Ascq, France</p>
-                    <div class="timeline-description">
-                        <ul>
-                            <li>A valuable professional experience that allowed me to take profit of my knowledge in physics and mathematics.</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
+                    <div class="timeline">
 
-            <!-- Education -->
-            <section class="section">
-                <h2 class="section-title">Education</h2>
-
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <h3 class="timeline-title">MSc in Fundamental Physics</h3>
-                        <span class="timeline-period"> Sep 2024 - Present</span>
-                    </div>
-                    <p class="timeline-subtitle"><a href="https://www.univ-lyon1.fr/" target="_blank">Université Claude Bernard Lyon 1</a>, Villeurbanne, France</p>
-                    <div class="timeline-description">
-                        <p>Focus: Cosmology and High Energy Physics</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <h3 class="timeline-title">BSc in Fundamental Physics</h3>
-                        <span class="timeline-period">Sep 2021 - Jun 2024</span>
-                    </div>
-                    <p class="timeline-subtitle"><a href='https://www.univ-lille.fr/' target="_blank">Université de Lille</a>, Villeneuve-d'Ascq, France</p>
-                    <div class="timeline-description">
-                        <p>Graduated with Honors</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Skills -->
-            <section class="section">
-                <h2 class="section-title">Skills</h2>
-                
-                <div class="skills-grid">
-                    <div class="skill-category">
-                        <h3>Programming & Tools</h3>
-                        <div class="skill-tags">
-                            <span class="skill-tag">Python</span>
-                            <span class="skill-tag">LaTeX</span>
-                            <span class="skill-tag">Mathematica</span>
-                            <span class="skill-tag">C++</span>
-                            <span class="skill-tag">Git</span>
+                        <div class="tl-item">
+                            <div class="tl-date">
+                                <strong>Mar 2026</strong>
+                                Present
+                            </div>
+                            <div class="tl-line"></div>
+                            <div class="tl-body">
+                                <p class="tl-title">Research Intern</p>
+                                <p class="tl-org"><a href="https://www.oca.eu/fr/" target="_blank">Observatoire de la Côte-d'Azur</a> — Nice, France</p>
+                                <div class="tl-desc">
+                                    <ul>
+                                        <li><em>Dynamique autour des trous noirs chargés en relativité intriquée</em></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="skill-category">
-                        <h3>Data Science & ML</h3>
-                        <div class="skill-tags">
-                            <span class="skill-tag">Numpy</span>
-                            <span class="skill-tag">Scipy</span>
-                            <span class="skill-tag">Matplotlib</span>
-                            <span class="skill-tag">Pandas</span>
-                            <span class="skill-tag">TensorFlow</span>
+                        <div class="tl-item">
+                            <div class="tl-date">
+                                <strong>May 2025</strong>
+                                Aug 2025
+                            </div>
+                            <div class="tl-line"></div>
+                            <div class="tl-body">
+                                <p class="tl-title">Research Intern</p>
+                                <p class="tl-org"><a href="https://nbi.ku.dk/english/" target="_blank">Niels Bohr Institute</a> — Copenhagen, Denmark</p>
+                                <div class="tl-desc">
+                                    <ul>
+                                        <li><em>Superradiance in charged black holes</em></li>
+                                        <li>International internship; gained research experience abroad and expanded scientific perspective.</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="skill-category">
-                        <h3>Physics & Modeling</h3>
-                        <div class="skill-tags">
-                            <span class="skill-tag">Numerical Methods</span>
-                            <span class="skill-tag">Simulations</span>
-                            <span class="skill-tag">Monte Carlo</span>
-                            <span class="skill-tag">General Relativity</span>
+                        <div class="tl-item">
+                            <div class="tl-date">
+                                <strong>May 2024</strong>
+                                Jul 2024
+                            </div>
+                            <div class="tl-line"></div>
+                            <div class="tl-body">
+                                <p class="tl-title">Research Intern</p>
+                                <p class="tl-org"><a href="https://phlam.univ-lille.fr/" target="_blank">PhLAM — Laboratoire de Physique des Lasers, Atomes et Molécules</a>, Villeneuve-d'Ascq</p>
+                                <div class="tl-desc">
+                                    <ul>
+                                        <li><em>Time-frequency representation of rotating detector signals in quantum field theory</em></li>
+                                        <li>First contact with the world of research.</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
+
+                        <div class="tl-item">
+                            <div class="tl-date">
+                                <strong>Oct 2023</strong>
+                                May 2024
+                            </div>
+                            <div class="tl-line"></div>
+                            <div class="tl-body">
+                                <p class="tl-title">Undergraduate Tutor</p>
+                                <p class="tl-org"><a href="https://www.univ-lille.fr/" target="_blank">Université de Lille</a> — Villeneuve-d'Ascq, France</p>
+                                <div class="tl-desc">
+                                    <ul>
+                                        <li>Applied knowledge in physics and mathematics to support undergraduate students.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- Projects -->
-            <section class="section">
-                <h2 class="section-title">Projects</h2>
-                
-                <div class="projects-grid">
-                    <div class="project-card">
-                        <div class="project-content">
-                            <h3 class="project-title">Scattering states of the stationary 1D Schrödinger Equation</h3>
-                            <p class="project-description">
-                                Numerical modeling project (First-Year Master's Program)
-                            </p>
-                            <div class="project-tech">
-                                <span class="tech-badge">C++</span>
+        <!-- EDUCATION -->
+        <section id="education">
+            <div class="wrap">
+                <div class="reveal">
+                    <p class="section-label">03 — Formation</p>
+                    <h2 class="section-title">Education</h2>
+
+                    <div class="timeline">
+
+                        <div class="tl-item">
+                            <div class="tl-date">
+                                <strong>Sep 2024</strong>
+                                Present
+                            </div>
+                            <div class="tl-line"></div>
+                            <div class="tl-body">
+                                <p class="tl-title">MSc in Fundamental Physics</p>
+                                <p class="tl-org"><a href="https://www.univ-lyon1.fr/" target="_blank">Université Claude Bernard Lyon 1</a> — Villeurbanne, France</p>
+                                <div class="tl-desc">Focus: Cosmology and High Energy Physics</div>
+                            </div>
+                        </div>
+
+                        <div class="tl-item">
+                            <div class="tl-date">
+                                <strong>Sep 2021</strong>
+                                Jun 2024
+                            </div>
+                            <div class="tl-line"></div>
+                            <div class="tl-body">
+                                <p class="tl-title">BSc in Fundamental Physics</p>
+                                <p class="tl-org"><a href="https://www.univ-lille.fr/" target="_blank">Université de Lille</a> — Villeneuve-d'Ascq, France</p>
+                                <div class="tl-desc">Graduated with Honors</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section id="skills">
+            <div class="wrap">
+                <div class="reveal">
+                    <p class="section-label">04 — Tools</p>
+                    <h2 class="section-title">Skills</h2>
+
+                    <div class="skills-wrap">
+                        <div class="skill-box">
+                            <div class="skill-box-label">Programming & Tools</div>
+                            <div class="skill-chips">
+                                <span class="chip">Python</span>
+                                <span class="chip">LaTeX</span>
+                                <span class="chip">Mathematica</span>
+                                <span class="chip">C++</span>
+                                <span class="chip">Git</span>
+                            </div>
+                        </div>
+                        <div class="skill-box">
+                            <div class="skill-box-label">Data Science & ML</div>
+                            <div class="skill-chips">
+                                <span class="chip">NumPy</span>
+                                <span class="chip">SciPy</span>
+                                <span class="chip">Matplotlib</span>
+                                <span class="chip">Pandas</span>
+                                <span class="chip">TensorFlow</span>
+                            </div>
+                        </div>
+                        <div class="skill-box">
+                            <div class="skill-box-label">Physics & Modeling</div>
+                            <div class="skill-chips">
+                                <span class="chip">Numerical Methods</span>
+                                <span class="chip">Simulations</span>
+                                <span class="chip">Monte Carlo</span>
+                                <span class="chip">General Relativity</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- Languages -->
-            <section class="section">
-                <h2 class="section-title">Languages</h2>
-                
-                <div class="languages-list">
-                    <div class="language-item">
-                        <div class="language-header">
-                            <span class="language-name">French</span>
-                            <span class="language-level">Native</span>
-                        </div>
-                        <div class="language-bar">
-                            <div class="language-progress" style="width: 100%"></div>
-                        </div>
-                    </div>
+        <!-- PROJECTS -->
+        <section id="projects">
+            <div class="wrap">
+                <div class="reveal">
+                    <p class="section-label">05 — Work</p>
+                    <h2 class="section-title">Projects</h2>
 
-                    <div class="language-item">
-                        <div class="language-header">
-                            <span class="language-name">English</span>
-                            <span class="language-level">Fluent</span>
-                        </div>
-                        <div class="language-bar">
-                            <div class="language-progress" style="width: 85%"></div>
-                        </div>
-                    </div>
-
-                    <div class="language-item">
-                        <div class="language-header">
-                            <span class="language-name">Japanese</span>
-                            <span class="language-level">Interested in learning</span>
-                        </div>
-                        <div class="language-bar">
-                            <div class="language-progress" style="width: 5%"></div>
+                    <div class="projects-wrap">
+                        <div class="proj-card">
+                            <div class="proj-number">01</div>
+                            <h3 class="proj-title">Scattering States of the Stationary 1D Schrödinger Equation</h3>
+                            <p class="proj-desc">Numerical modeling project — First-Year Master's Program</p>
+                            <div class="proj-chips">
+                                <span class="proj-chip">C++</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
+        <!-- LANGUAGES -->
+        <section id="languages">
+            <div class="wrap">
+                <div class="reveal">
+                    <p class="section-label">06 — Languages</p>
+                    <h2 class="section-title">Languages</h2>
 
-            <section class="section">
-                <h2 class="section-title">Interests</h2>
-
-                <div class="languages-list">
-                    <div class="language-item">
-                        <p><b>Electric guitar playing</b></p>
-                    </div>
-                    <div class="language-item">
-                        <p><b>Music composition</b></p>
-                    </div>
-                    <div class="language-item">
-                        <p><b>Python coding</b></p>
-                    </div>
-                    <div class="language-item">
-                        <p><b>Videogames</b></p>
-                    </div>
-                    <div class="language-item">
-                        <p><b>Maths & Physics</b></p>
+                    <div class="lang-wrap">
+                        <div class="lang-card">
+                            <div class="lang-top">
+                                <span class="lang-name">French</span>
+                                <span class="lang-level">Native</span>
+                            </div>
+                            <div class="lang-bar"><div class="lang-fill" data-w="100" style="width:0%"></div></div>
+                        </div>
+                        <div class="lang-card">
+                            <div class="lang-top">
+                                <span class="lang-name">English</span>
+                                <span class="lang-level">Fluent</span>
+                            </div>
+                            <div class="lang-bar"><div class="lang-fill" data-w="85" style="width:0%"></div></div>
+                        </div>
+                        <div class="lang-card">
+                            <div class="lang-top">
+                                <span class="lang-name">Japanese</span>
+                                <span class="lang-level">Interested</span>
+                            </div>
+                            <div class="lang-bar"><div class="lang-fill" data-w="5" style="width:0%"></div></div>
+                        </div>
                     </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
+
+        <!-- INTERESTS -->
+        <section id="interests">
+            <div class="wrap">
+                <div class="reveal">
+                    <p class="section-label">07 — Beyond</p>
+                    <h2 class="section-title">Interests</h2>
+
+                    <div class="interests-wrap">
+                        <span class="interest-tag">🎸 Electric Guitar</span>
+                        <span class="interest-tag">🎵 Music Composition</span>
+                        <span class="interest-tag">🐍 Python Coding</span>
+                        <span class="interest-tag">🎮 Videogames</span>
+                        <span class="interest-tag">⚛️ Maths & Physics</span>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
+    <!-- ======================== FOOTER ======================== -->
     <footer>
-        <div class="container">
-            <p>&copy; 2026 Arnaud Crepinge</p>
+        <div class="wrap" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; width:100%;">
+            <p>© 2026 Arnaud Crepinge</p>
+            <span>Observatoire de la Côte-d'Azur — Nice, France</span>
         </div>
     </footer>
+
+    <script>
+        /* ---- THEME TOGGLE ---- */
+        const btn  = document.getElementById('theme-btn');
+        const icon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+
+        function applyTheme(theme) {
+            html.setAttribute('data-theme', theme);
+            icon.textContent = theme === 'dark' ? '🌑' : '☀️';
+            localStorage.setItem('cv-theme', theme);
+        }
+
+        // Load saved preference
+        const saved = localStorage.getItem('cv-theme') || 'dark';
+        applyTheme(saved);
+
+        btn.addEventListener('click', () => {
+            const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            applyTheme(next);
+        });
+
+        /* ---- SCROLL REVEAL ---- */
+        const revealEls = document.querySelectorAll('.reveal');
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    obs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.08 });
+
+        revealEls.forEach(el => obs.observe(el));
+
+        /* ---- LANGUAGE BAR ANIMATION ---- */
+        const barObs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.querySelectorAll('.lang-fill').forEach(fill => {
+                        const w = fill.getAttribute('data-w');
+                        fill.style.width = w + '%';
+                    });
+                    barObs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('.lang-wrap').forEach(el => barObs.observe(el));
+    </script>
 </body>
 </html>
